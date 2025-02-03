@@ -1,0 +1,101 @@
+/* Login.css */
+
+.login-container {
+  display:flexbox;
+  justify-content: center;
+  align-items: center;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+  height: 50vh; /* Full viewport height */
+  background: #f0f2f5; /* Light background */
+}
+
+.login-form {
+  background: #ffffff; /* White background for a cleaner look */
+  padding: 2rem;
+  border-radius: 8px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+  width: 100%;
+  max-width: 380px; /* Max width for the form */
+  text-align: center;
+}
+
+.login-form img {
+  display: flex;
+  margin: 0 auto 2rem auto;
+  max-width: 120px; /* Reduced image size */
+}
+
+.form-group {
+  margin-bottom: 1.5rem;
+  text-align: center;
+  background-color: #0056b3;/* Align the label to the left */
+}
+
+.form-group label {
+  display: inline;
+  margin-bottom: 0.5rem;
+  color: #333;
+  font-weight: 500;
+}
+.mb-3{
+  text-align: center;
+  right: 20px;
+}
+.form-control {
+  width: 20%; /* Center the inputs with 80% width */
+  padding: 0.75rem;
+  text-align: center;
+  border: 1px solid #000000;
+  border-radius: 4px;
+  font-size: 1rem;
+  margin: 0 auto; /* Center the input */
+  display: block; /* Ensure the inputs are block-level */
+}
+
+.form-control:focus {
+  outline: none;
+  border-color: #007bff;
+  box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.25);
+}
+
+.btn-primary {
+  width: 10%; /* Center the button with 80% width */
+  padding: 0.75rem;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background-color 0.3s;
+  margin: 1rem auto 0 auto; /* Center the button */
+  display: block;
+}
+
+.btn-primary:hover {
+  background-color: #0056b3;
+}
+
+.google-signin {
+  margin-top: 1rem;
+  text-align: center;
+  font-size: 0.875rem; /* Smaller font size */
+  padding: 0.5rem 1rem; /* Smaller padding */
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  cursor: pointer;
+  background-color: #4285F4;
+  color: white;
+  width: 80%; /* Center the Google button */
+  margin: 1rem auto; /* Center the button */
+}
+
+.google-signin:hover {
+  background-color: #357ae8;
+}
+
+.error-message {
+  color: #dc3545;
+  margin-top: 1rem;
+  text-align: center;
+}

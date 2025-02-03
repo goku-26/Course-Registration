@@ -71,6 +71,7 @@ import { auth } from "../components/firebase";
 import { toast } from "react-toastify";
 import SignInwithGoogle from "../components/signInWithGoogle";
 import { useNavigate } from "react-router-dom";
+import './Login.css'
 
 function LoginComponent() {
   const [email, setEmail] = useState("");
@@ -125,11 +126,11 @@ function LoginComponent() {
         />
       </div>
       <div className="mb-3">
-        <label>Email address</label>
+        <label>Email address :</label>
         <input
           type="email"
           className="form-control"
-          placeholder="Enter email"
+          // placeholder="Enter email"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
           required
@@ -137,11 +138,11 @@ function LoginComponent() {
       </div>
 
       <div className="mb-3">
-        <label>Password</label>
+        <label>Password :</label>
         <input
           type="password"
           className="form-control"
-          placeholder="Enter password"
+          // placeholder="Enter password"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
           required
@@ -159,3 +160,4 @@ function LoginComponent() {
 }
 
 export default LoginComponent;
+
