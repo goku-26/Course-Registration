@@ -1,77 +1,47 @@
-// // Import the functions you need from the SDKs you need
-// import { initializeApp } from "firebase/app";
-// import {getAuth} from "firebase/auth";
-// import {getFirestore} from "firebase/firestore";
-// // TODO: Add SDKs for Firebase products that you want to use
-// // https://firebase.google.com/docs/web/setup#available-libraries
+// // // Import the functions you need from the SDKs you need
+// // import { initializeApp } from "firebase/app";
+// // import { getAnalytics } from "firebase/analytics";
+// // // TODO: Add SDKs for Firebase products that you want to use
+// // // https://firebase.google.com/docs/web/setup#available-libraries
 
-// // Your web app's Firebase configuration
+// // // Your web app's Firebase configuration
+// // // For Firebase JS SDK v7.20.0 and later, measurementId is optional
+// // const firebaseConfig = {
+// //   apiKey: "AIzaSyCZBxA4vO2DMiqeFjGWsQo-sQG4sFfj9eo",
+// //   authDomain: "auth-3b63c.firebaseapp.com",
+// //   projectId: "auth-3b63c",
+// //   storageBucket: "auth-3b63c.firebasestorage.app",
+// //   messagingSenderId: "126624703434",
+// //   appId: "1:126624703434:web:bfaff0f57b5359b56e6533",
+// //   measurementId: "G-7T58C8VT2M"
+// // };
+
+// // // Initialize Firebase
+// // const app = initializeApp(firebaseConfig);
+// // const analytics = getAnalytics(app);
+// // export const db = getFirestore(app);
+
+// // Import the necessary Firebase modules
+// import { initializeApp } from "firebase/app";
+// import { getAuth } from "firebase/auth";  // ✅ Import Firebase Authentication
+// import { getFirestore } from "firebase/firestore"; // ✅ Import Firestore
+// import { getAnalytics } from "firebase/analytics";
+
+// // Firebase configuration
 // const firebaseConfig = {
-//   apiKey: "AIzaSyC-NY5stX5QtI3eTu_whtd6qkg5CDdV15k",
-//   authDomain: "course-17825.firebaseapp.com",
-//   projectId: "course-17825",
-//   storageBucket: "course-17825.firebasestorage.app",
-//   messagingSenderId: "1035289144866",
-//   appId: "1:1035289144866:web:823608a25b6d9c6593e47b"
+//   apiKey: "AIzaSyCZBxA4vO2DMiqeFjGWsQo-sQG4sFfj9eo",
+//   authDomain: "auth-3b63c.firebaseapp.com",
+//   projectId: "auth-3b63c",
+//   storageBucket: "auth-3b63c.appspot.com", // ✅ Fixed storageBucket URL
+//   messagingSenderId: "126624703434",
+//   appId: "1:126624703434:web:bfaff0f57b5359b56e6533",
+//   measurementId: "G-7T58C8VT2M"
 // };
 
 // // Initialize Firebase
 // const app = initializeApp(firebaseConfig);
-// export const auth=getAuth();
-// export const db=getFirestore(app);
+// const analytics = getAnalytics(app);
+// const auth = getAuth(app);  // ✅ Initialize Authentication
+// const db = getFirestore(app); // ✅ Initialize Firestore
 
-// export default app;
-
-// // Import the functions you need from the SDKs you need
-// import { initializeApp } from "firebase/app";
-// import { getAuth } from "firebase/auth";
-// import { getFirestore } from "firebase/firestore";
-
-// // TODO: Add SDKs for Firebase products that you want to use
-// // https://firebase.google.com/docs/web/setup#available-libraries
-
-// // Your web app's Firebase configuration
-// const firebaseConfig = {
-//   apiKey: "AIzaSyC-NY5stX5QtI3eTu_whtd6qkg5CDdV15k",
-//   authDomain: "course-17825.firebaseapp.com",
-//   projectId: "course-17825",
-//   storageBucket: "course-17825.appspot.com", // Fixed the incorrect storageBucket URL
-//   messagingSenderId: "1035289144866",
-//   appId: "1:1035289144866:web:823608a25b6d9c6593e47b",
-// };
-
-// // Initialize Firebase
-// const app = initializeApp(firebaseConfig);
-
-// // Initialize Firebase Authentication and Firestore
-// export const auth = getAuth(app); // Pass the app instance to getAuth
-// export const db = getFirestore(app); // Pass the app instance to getFirestore
-
-// export default app;
-
-// Import the functions you need from the SDKs you need
-import { initializeApp } from "firebase/app";
-import { getAuth } from "firebase/auth";
-import { getFirestore } from "firebase/firestore";
-// TODO: Add SDKs for Firebase products that you want to use
-// https://firebase.google.com/docs/web/setup#available-libraries
-
-// Your web app's Firebase configuration
-const firebaseConfig = {
-  apiKey: "AIzaSyCcYve58YfZQGLjIVdbj_O8xHeoIsWfyvk",
-  authDomain: "course-portal-5d528.firebaseapp.com",
-  projectId: "course-portal-5d528",
-  storageBucket: "course-portal-5d528.firebasestorage.app",
-  messagingSenderId: "972077388898",
-  appId: "1:972077388898:web:0c48627d8072ebd83ead3b"
-};
-
-// Initialize Firebase
-const app = initializeApp(firebaseConfig);
-
-// Initialize Firebase Authentication and Firestore
-export const auth = getAuth(app);
-export const db = getFirestore(app);
-
-// Optionally, export the app instance for debugging or other purposes
-export default app;
+// export { auth, db }; // ✅ Export both Authentication and Firestore

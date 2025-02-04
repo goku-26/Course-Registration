@@ -1,180 +1,110 @@
-// import React, { useEffect } from "react";
-// import 'bootstrap/dist/css/bootstrap.min.css';
-// import "./App.css";
-// import {
-//   BrowserRouter as Router,
-//   Routes,
-//   Route,
-//   Navigate,
-// } from "react-router-dom";
-
-// import LoginComponent from "./pages/Login";
-// import Home from "./pages/Home";
-
-// import { ToastContainer } from "react-toastify";
+// import React, { useState, useEffect } from "react";
+// import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
+// import { GoogleLogin, GoogleOAuthProvider } from '@react-oauth/google';
+// import { ToastContainer, toast } from "react-toastify";
 // import "react-toastify/dist/ReactToastify.css";
-// import { useState } from "react";
-// import { auth } from "./components/firebase";
+// import Admin from "./pages/Admin";
+// import User from "./pages/Student";
+// import LoginComponent from "./pages/Login";
+
+// const clientId = "364948000411-97tnlbleijdq8025vh4vfpqf15o6qmjh.apps.googleusercontent.com";
 
 // function App() {
-//   const [user, setUser] = useState();
-//   useEffect(() => {
-//     auth.onAuthStateChanged((user) => {
-//       setUser(user);
-//     });
-//   });
 //   return (
-//     <Router>
-//       <div className="App">
-//         <div className="auth-wrapper">
-//           <div className="auth-inner">
-//             {/* <Routes>
-//               <Route
-//                 path="/"
-//                 element={user ? <Navigate to="/profile" /> : <LoginComponent />}
-//               />
-//               <Route path="/login" element={<LoginComponent />} />
-//               <Route path="/home" element={<Home />} />
-//             </Routes> */}
-//             <Routes>
-//             <Route path="/" element={user ? <Navigate to="/home" /> : <LoginComponent />}/>
-//             <Route path="/login" element={<LoginComponent />} />
-//             <Route path="/home" element={<Home />} />
-//             </Routes>
-//             <ToastContainer />
-//           </div>
-//         </div>
-//       </div>
-//     </Router>
+//     <GoogleOAuthProvider clientId={clientId}>
+//       {/* Wrap everything inside <Router> */}
+//       <Router>
+//         <ToastContainer />
+//         <Routes>
+//           <Route path="/login" element={<LoginComponent />} />
+//           <Route path="/admin" element={<AdminProtectedRoute />} />
+//           <Route path="/user" element={<UserProtectedRoute />} />
+//           <Route path="/" element={<RedirectToRole />} />
+//           <Route path="*" element={<Navigate to="/login" />} />
+//         </Routes>
+//       </Router>
+//     </GoogleOAuthProvider>
 //   );
 // }
 
-// export default App;
+// // Protected Admin Route
+// const AdminProtectedRoute = () => {
+//   const isAuthenticated = !!localStorage.getItem("token");
+//   const userRole = localStorage.getItem("role");
 
-// import React, { useEffect, useState } from "react";
-// import "bootstrap/dist/css/bootstrap.min.css";
-// import "./App.css";
-// import {
-//   BrowserRouter as Router,
-//   Routes,
-//   Route,
-//   Navigate,
-// } from "react-router-dom";
+//   return isAuthenticated && userRole === "admin" ? <Admin /> : <Navigate to="/login" />;
+// };
 
-// import LoginComponent from "./pages/Login";
-// import Home from "./pages/Home";
+// // Protected User Route
+// const UserProtectedRoute = () => {
+//   const isAuthenticated = !!localStorage.getItem("token");
+//   const userRole = localStorage.getItem("role");
 
-// import { ToastContainer } from "react-toastify";
-// import "react-toastify/dist/ReactToastify.css";
-// import { auth } from "./components/firebase";
+//   return isAuthenticated && userRole === "user" ? <User /> : <Navigate to="/login" />;
+// };
 
-// function App() {
-//   const [user, setUser] = useState(null); // Initialize user state as null for clarity
+// // Redirect based on role
+// const RedirectToRole = () => {
+//   const isAuthenticated = !!localStorage.getItem("token");
+//   const userRole = localStorage.getItem("role");
 
-//   useEffect(() => {
-//     // Listen for authentication state changes
-//     const unsubscribe = auth.onAuthStateChanged((currentUser) => {
-//       setUser(currentUser);
-//     });
-
-//     // Cleanup the subscription on unmount
-//     return () => unsubscribe();
-//   }, []);
-
-//   return (
-//     <Router>
-//       <div className="App">
-//         <div className="auth-wrapper">
-//           <div className="auth-inner">
-//             <Routes>
-//               {/* Redirect user based on authentication state */}
-//               <Route
-//                 path="/"
-//                 element={user ? <Navigate to="/home" replace /> : <LoginComponent />}
-//               />
-//               <Route path="/login" element={<LoginComponent />} />
-//               <Route
-//                 path="/home"
-//                 element={user ? <Home /> : <Navigate to="/login" replace />}
-//               />
-//             </Routes>
-//             <ToastContainer />
-//           </div>
-//         </div>
-//       </div>
-//     </Router>
-//   );
-// }
+//   if (!isAuthenticated) return <Navigate to="/login" />;
+//   return userRole === "admin" ? <Navigate to="/admin" /> : <Navigate to="/user" />;
+// };
 
 // export default App;
 
 import React from "react";
 import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
-import LoginComponent from "./pages/Login";
-import Admin from "./pages/Admin";
-import User from "./pages/User";
+import { GoogleOAuthProvider } from '@react-oauth/google';
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import Admin from "./pages/Admin";
+import Student from "./pages/Student";
+import LoginComponent from "./pages/Login";
+
+const clientId = "364948000411-97tnlbleijdq8025vh4vfpqf15o6qmjh.apps.googleusercontent.com";
 
 function App() {
-  // Check if the user is authenticated and their role
+  return (
+    <GoogleOAuthProvider clientId={clientId}>
+      <Router>
+        <ToastContainer />
+        <Routes>
+          <Route path="/login" element={<LoginComponent />} />
+          <Route path="/admin" element={<AdminProtectedRoute />} />
+          <Route path="/student" element={<StudentProtectedRoute />} />
+          <Route path="/" element={<RedirectToRole />} />
+          <Route path="*" element={<Navigate to="/login" />} />
+        </Routes>
+      </Router>
+    </GoogleOAuthProvider>
+  );
+}
+
+// Protected Admin Route
+const AdminProtectedRoute = () => {
   const isAuthenticated = !!localStorage.getItem("token");
   const userRole = localStorage.getItem("role");
 
-  return (
-    <Router>
-      {/* Toast notifications */}
-      <ToastContainer />
+  return isAuthenticated && userRole === "admin" ? <Admin /> : <Navigate to="/login" />;
+};
 
-      <Routes>
-        {/* Login Route (accessible to everyone) */}
-        <Route path="/login" element={<LoginComponent />} />
+// Protected Student Route
+const StudentProtectedRoute = () => {
+  const isAuthenticated = !!localStorage.getItem("token");
+  const userRole = localStorage.getItem("role");
 
-        {/* Admin Route (accessible only to authenticated admins) */}
-        <Route
-          path="/admin"
-          element={
-            isAuthenticated && userRole === "admin" ? (
-              <Admin />
-            ) : (
-              <Navigate to="/login" />
-            )
-          }
-        />
+  return isAuthenticated && userRole === "student" ? <Student /> : <Navigate to="/login" />;
+};
 
-        {/* User Route (accessible only to authenticated users) */}
-        <Route
-          path="/user"
-          element={
-            isAuthenticated && userRole === "user" ? (
-              <User />
-            ) : (
-              <Navigate to="/login" />
-            )
-          }
-        />
+// Redirect based on role
+const RedirectToRole = () => {
+  const isAuthenticated = !!localStorage.getItem("token");
+  const userRole = localStorage.getItem("role");
 
-        {/* Default Route (redirect to login if not authenticated) */}
-        <Route
-          path="/"
-          element={
-            isAuthenticated ? (
-              userRole === "admin" ? (
-                <Navigate to="/admin" />
-              ) : (
-                <Navigate to="/user" />
-              )
-            ) : (
-              <Navigate to="/login" />
-            )
-          }
-        />
-
-        {/* Fallback Route (redirect to login for any unknown paths) */}
-        <Route path="*" element={<Navigate to="/login" />} />
-      </Routes>
-    </Router>
-  );
-}
+  if (!isAuthenticated) return <Navigate to="/login" />;
+  return userRole === "admin" ? <Navigate to="/admin" /> : <Navigate to="/student" />;
+};
 
 export default App;

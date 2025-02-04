@@ -1,163 +1,86 @@
-// import { signInWithEmailAndPassword } from "firebase/auth";
-// import React, { useState } from "react";
-// import { auth } from "../components/firebase";
-// import { toast } from "react-toastify";
-// import SignInwithGoogle from "../components/signInWithGoogle";
-
-// function LoginComponent() {
-//   const [email, setEmail] = useState("");
-//   const [password, setPassword] = useState("");
-
-//   const handleSubmit = async (e) => {
-//     e.preventDefault();
-//     try {
-//       await signInWithEmailAndPassword(auth, email, password);
-//       console.log("User logged in Successfully");
-//       window.location.href = "/profile";
-//       toast.success("User logged in Successfully", {
-//         position: "top-center",
-//       });
-//     } catch (error) {
-//       console.log(error.message);
-
-//       toast.error(error.message, {
-//         position: "bottom-center",
-//       });
-//     }
-//   };
-
-//   return (
-//     <form onSubmit={handleSubmit}>
-//       <div className="image-container">
-//         <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQYB-39YIn8M7nenZPpLqrS485KtB_nMVAvgA&s"></img>
-//       </div>
-//          <div className="mb-3">
-//         <label>Email address</label>
-//         <input
-//           type="email"
-//           className="form-control"
-//           placeholder="Enter email"
-//           value={email}
-//           onChange={(e) => setEmail(e.target.value)}
-//         />
-//       </div>
-
-//       <div className="mb-3">
-//         <label>Password</label>
-//         <input
-//           type="password"
-//           className="form-control"
-//           placeholder="Enter password"
-//           value={password}
-//           onChange={(e) => setPassword(e.target.value)}
-//         />
-//       </div>
-
-//       <div className="d-grid">
-//         <button type="submit" className="btn btn-primary">
-//           Submit
-//         </button>
-//       </div>
-//       <SignInwithGoogle/>
-//     </form>
-//   );
-// }
-
-// export default LoginComponent;
-
-import { signInWithEmailAndPassword } from "firebase/auth";
 import React, { useState } from "react";
-import { auth } from "../components/firebase";
-import { toast } from "react-toastify";
-import SignInwithGoogle from "../components/signInWithGoogle";
+import { GoogleLogin } from "@react-oauth/google";
 import { useNavigate } from "react-router-dom";
-import './Login.css'
+import { toast } from "react-toastify";
+import "./Login.css";
 
 function LoginComponent() {
+  const navigate = useNavigate();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const navigate = useNavigate();
+  const [showRoleSelection, setShowRoleSelection] = useState(false);
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
+  const handleLoginSuccess = (response) => {
+    console.log("Login successful:", response);
+    localStorage.setItem("token", response.credential);
 
-    // Check if the email ends with the allowed domain
-    const allowedDomain = "bitsathy.ac.in";
-    if (!email.endsWith(`@${allowedDomain}`)) {
-      toast.error(`Only ${allowedDomain} email addresses are allowed.`, {
-        position: "bottom-center",
-      });
-      return; // Stop further execution
-    }
+    // Show role selection modal
+    setShowRoleSelection(true);
+  };
 
-    try {
-      const userCredential = await signInWithEmailAndPassword(auth, email, password);
-      const user = userCredential.user;
+  const handleLoginFailure = (error) => {
+    console.error("Login failed:", error);
+    toast.error("Login failed, please try again.", { position: "top-center" });
+  };
 
-      // Store token, role, and email in localStorage
-      localStorage.setItem("token", await user.getIdToken());
-      localStorage.setItem("role", "user"); // Replace with actual role from your backend or Firebase
-      localStorage.setItem("email", user.email);
+  const handleRoleSelection = (role) => {
+    localStorage.setItem("role", role);
+    toast.success(`Logged in as ${role}`, { position: "top-center" });
 
-      // Redirect based on role
-      if (localStorage.getItem("role") === "admin") {
-        navigate("/admin");
-      } else {
-        navigate("/user");
-      }
-
-      toast.success("User logged in successfully", {
-        position: "top-center",
-      });
-    } catch (error) {
-      console.error(error.message);
-      toast.error(error.message, {
-        position: "bottom-center",
-      });
+    // Navigate to respective dashboard
+    if (role === "admin") {
+      navigate("/admin");
+    } else {
+      navigate("/student");
     }
   };
 
   return (
-    <form onSubmit={handleSubmit}>
+    <div className="login-container">
+      <div className="login-box">
       <div className="image-container">
-        <img
-          src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQYB-39YIn8M7nenZPpLqrS485KtB_nMVAvgA&s"
-          alt="Login"
-        />
-      </div>
-      <div className="mb-3">
-        <label>Email address :</label>
+          <img
+            src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQYB-39YIn8M7nenZPpLqrS485KtB_nMVAvgA&s"
+            alt="Login"
+          />
+        </div>
+        <h2>Login</h2>
         <input
           type="email"
-          className="form-control"
-          // placeholder="Enter email"
+          className="input-field"
+          placeholder="Enter your email"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
-          required
         />
-      </div>
-
-      <div className="mb-3">
-        <label>Password :</label>
         <input
           type="password"
-          className="form-control"
-          // placeholder="Enter password"
+          className="input-field"
+          placeholder="Enter your password"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
-          required
         />
-      </div>
-
-      <div className="d-grid">
-        <button type="submit" className="btn btn-primary">
+        <button type="submit" className="submit-button">
           Submit
         </button>
+        <div className="google-login">
+          <GoogleLogin onSuccess={handleLoginSuccess} onError={handleLoginFailure} />
+        </div>
+
+        {/* Role Selection Modal */}
+        {showRoleSelection && (
+          <div className="role-selection">
+            <h3>Select Your Role</h3>
+            <button onClick={() => handleRoleSelection("admin")} className="role-button">
+              Admin
+            </button>
+            <button onClick={() => handleRoleSelection("student")} className="role-button">
+              Student
+            </button>
+          </div>
+        )}
       </div>
-      <SignInwithGoogle />
-    </form>
+    </div>
   );
 }
 
 export default LoginComponent;
-
