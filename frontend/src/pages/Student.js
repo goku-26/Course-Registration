@@ -5,7 +5,7 @@ import './Student.css'; // We'll reuse the Admin.css with minor modifications
 const User = () => {
   const navigate = useNavigate();
   const userEmail = localStorage.getItem('email');
-  const studentName = "John Doe"; // Replace with actual data from your backend
+  const studentName = "Gokul"; // Replace with actual data from your backend
 
   // Sample course data - replace with API call
   const registeredCourses = [
@@ -44,6 +44,7 @@ const User = () => {
         {/* Sidebar */}
         <div className="user-sidebar">
           <div className="sidebar-menu">
+            <br></br>
             <h3>Student Menu</h3>
             <ul>
               <li className="active">
@@ -69,7 +70,7 @@ const User = () => {
         <div className="main-panel">
           <div className="panel-header">
             <h1>Welcome, {studentName}</h1>
-            <p>Current Semester: Spring 2024</p>
+            <p>Current Semester: Spring 2025</p>
           </div>
 
           {/* Registered Courses */}
