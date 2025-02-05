@@ -280,3 +280,85 @@
     color: #3498db;
   }
   
+  /* Regulation Selection */
+.regulation-selection {
+  text-align: center;
+  background: white;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.regulation-selection button {
+  background: #3498db;
+  color: white;
+  padding: 10px 15px;
+  border: none;
+  cursor: pointer;
+  margin: 5px;
+  border-radius: 5px;
+  transition: 0.3s;
+}
+
+.regulation-selection button:hover {
+  background: #2980b9;
+}
+
+/* Course Registration Form */
+.course-form {
+  background: white;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
+  width: 50%;
+  margin: 20px auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.course-form h2 {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+/* Inputs and labels for the registration form */
+.course-form input {
+  width: 100%;
+  padding: 10px;
+  margin: 10px 0;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+/* Updated course selection layout */
+.courses-list {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+.course-option {
+  display: flex;
+  align-items: center;
+  margin: 10px 0;
+}
+
+.course-option input {
+  margin-right: 10px;
+}
+
+.course-form button {
+  background: #27ae60;
+  color: white;
+  padding: 10px 15px;
+  border: none;
+  cursor: pointer;
+  width: 100%;
+  border-radius: 5px;
+  transition: 0.3s;
+}
+
+.course-form button:hover {
+  background: #219150;
+}
