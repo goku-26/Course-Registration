@@ -114,7 +114,12 @@ function LoginComponent() {
       if (response.data.token) {
         localStorage.setItem("token", response.data.token);
         localStorage.setItem("user", JSON.stringify(response.data.user));
-        setShowRoleSelection(true);
+        localStorage.setItem("email", response.data.user.email); // Ensure email is stored
+        if (response.data.user.role) {
+          handleRoleSelection(response.data.user.role); // Auto-select role if available
+        } else {
+          setShowRoleSelection(true); // Show role selection only if necessary
+        }
         toast.success("Login successful!", { position: "top-center" });
       } else {
         throw new Error("Invalid response from server");
@@ -133,7 +138,12 @@ function LoginComponent() {
       if (res.data.token) {
         localStorage.setItem("token", res.data.token);
         localStorage.setItem("user", JSON.stringify(res.data.user));
-        setShowRoleSelection(true);
+        localStorage.setItem("email", res.data.user.email); // Ensure email is stored
+        if (res.data.user.role) {
+          handleRoleSelection(res.data.user.role);
+        } else {
+          setShowRoleSelection(true);
+        }
         toast.success("Google Login successful!", { position: "top-center" });
       } else {
         throw new Error("Invalid response from server");
