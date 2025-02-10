@@ -279,20 +279,34 @@
 
 // export default User;
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import "./Student.css";
 
 const User = () => {
   const navigate = useNavigate();
-  const userEmail = localStorage.getItem("email");
-  const studentName = "Gokul"; // Replace with actual data from your backend
+  const [userEmail, setUserEmail] = useState("");
+
+  useEffect(() => {
+    const storedEmail = localStorage.getItem("email");
+    if (storedEmail) {
+      setUserEmail(storedEmail);
+    } else {
+      setUserEmail("unknown@student.com"); // Fallback if email is missing
+    }
+  }, []);
+
+  // Extract student name from email
+  const studentName = userEmail.includes("@")
+    ? userEmail.split(".")[0].toUpperCase()
+    : "STUDENT";
 
   const [showRegulations, setShowRegulations] = useState(false);
   const [selectedRegulation, setSelectedRegulation] = useState(null);
-  const [selectedCourses, setSelectedCourses] = useState([]);
+  const [selectedCourse, setSelectedCourse] = useState(null);
   const [rollNo, setRollNo] = useState("");
   const [semester, setSemester] = useState("");
+  const [registeredCourse, setRegisteredCourse] = useState(null);
 
   const courses2022 = [
     { id: 1, name: "Artificial Intelligence", code: "AI202" },
@@ -309,26 +323,21 @@ const User = () => {
   };
 
   const handleCourseSelection = (course) => {
-    setSelectedCourses((prevCourses) => {
-      const isAlreadySelected = prevCourses.some((c) => c.id === course.id);
-      if (isAlreadySelected) {
-        return prevCourses.filter((c) => c.id !== course.id);
-      } else {
-        return [...prevCourses, course];
-      }
-    });
+    setSelectedCourse(course);
   };
 
   const handleSubmitRegistration = () => {
-    if (!rollNo || !semester || selectedCourses.length === 0) {
-      alert("Please fill all fields and select at least one course.");
+    if (!rollNo || !semester || !selectedCourse) {
+      alert("Please fill all fields and select a course.");
       return;
     }
-    alert(`Courses Registered: ${selectedCourses.map((c) => c.name).join(", ")}`);
+    setRegisteredCourse(selectedCourse);
+    alert(`Course Registered: ${selectedCourse.name}`);
   };
 
   return (
     <div className="user-dashboard">
+      {/* Navbar */}
       <nav className="user-navbar">
         <div className="nav-left">
           <h2>Student Portal</h2>
@@ -344,10 +353,10 @@ const User = () => {
         </div>
       </nav>
 
+      {/* Sidebar & Main Content */}
       <div className="user-content">
         <div className="user-sidebar">
           <div className="sidebar-menu">
-            <br />
             <h3>Student Menu</h3>
             <ul>
               <li className="active">
@@ -369,12 +378,27 @@ const User = () => {
           </div>
         </div>
 
+        {/* Main Panel */}
         <div className="main-panel">
           <div className="panel-header">
             <h1>Welcome, {studentName}</h1>
             <p>Current Semester: Spring 2025</p>
           </div>
 
+          {/* Dashboard - Show Registered Course */}
+          {registeredCourse ? (
+            <div className="registered-course">
+              <h2>Registered Course</h2>
+              <div className="course-card">
+                <h3>{registeredCourse.name}</h3>
+                <p>Course Code: {registeredCourse.code}</p>
+              </div>
+            </div>
+          ) : (
+            <p className="no-course-msg">No courses registered yet.</p>
+          )}
+
+          {/* Course Registration */}
           {showRegulations && !selectedRegulation && (
             <div className="regulation-selection">
               <h2>Select Your Regulation</h2>
@@ -390,32 +414,18 @@ const User = () => {
           {selectedRegulation === "2022" && (
             <div className="course-form">
               <h2>Course Registration - Regulation 2022</h2>
-              <input
-                type="text"
-                placeholder="Student Name"
-                value={studentName}
-                readOnly
-              />
-              <input
-                type="text"
-                placeholder="Roll Number"
-                value={rollNo}
-                onChange={(e) => setRollNo(e.target.value)}
-              />
-              <input
-                type="text"
-                placeholder="Semester"
-                value={semester}
-                onChange={(e) => setSemester(e.target.value)}
-              />
+              <input type="text" placeholder="Student Name" value={studentName} readOnly />
+              <input type="text" placeholder="Roll Number" value={rollNo} onChange={(e) => setRollNo(e.target.value)} />
+              <input type="text" placeholder="Semester" value={semester} onChange={(e) => setSemester(e.target.value)} />
 
-              <h3>Select Courses for Current Semester</h3>
+              <h3>Select One Course for Current Semester</h3>
               <div className="courses-list">
                 {courses2022.map((course) => (
                   <label key={course.id} className="course-option">
                     <input
-                      type="checkbox"
-                      checked={selectedCourses.some((c) => c.id === course.id)}
+                      type="radio"
+                      name="selectedCourse"
+                      checked={selectedCourse?.id === course.id}
                       onChange={() => handleCourseSelection(course)}
                     />
                     {course.name} ({course.code})

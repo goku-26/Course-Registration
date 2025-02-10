@@ -54,16 +54,16 @@
 
 // export default App;
 
-import React from "react";
+import React, { useEffect } from "react";
 import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
-import { GoogleOAuthProvider } from '@react-oauth/google';
+import { GoogleOAuthProvider } from "@react-oauth/google";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import Admin from "./pages/Admin";
 import Student from "./pages/Student";
 import LoginComponent from "./pages/Login";
 
-const clientId = "364948000411-97tnlbleijdq8025vh4vfpqf15o6qmjh.apps.googleusercontent.com";
+const clientId = process.env.REACT_APP_GOOGLE_CLIENT_ID;
 
 function App() {
   return (
@@ -82,29 +82,50 @@ function App() {
   );
 }
 
-// Protected Admin Route
+// **✅ Admin Protected Route**
 const AdminProtectedRoute = () => {
-  const isAuthenticated = !!localStorage.getItem("token");
+  const isAuthenticated = checkAuth();
   const userRole = localStorage.getItem("role");
 
   return isAuthenticated && userRole === "admin" ? <Admin /> : <Navigate to="/login" />;
 };
 
-// Protected Student Route
+// **✅ Student Protected Route**
 const StudentProtectedRoute = () => {
-  const isAuthenticated = !!localStorage.getItem("token");
+  const isAuthenticated = checkAuth();
   const userRole = localStorage.getItem("role");
 
   return isAuthenticated && userRole === "student" ? <Student /> : <Navigate to="/login" />;
 };
 
-// Redirect based on role
+// **✅ Redirect based on role**
 const RedirectToRole = () => {
-  const isAuthenticated = !!localStorage.getItem("token");
+  const isAuthenticated = checkAuth();
   const userRole = localStorage.getItem("role");
 
   if (!isAuthenticated) return <Navigate to="/login" />;
   return userRole === "admin" ? <Navigate to="/admin" /> : <Navigate to="/student" />;
 };
 
+// **✅ Check Authentication & Auto Logout on Token Expiry**
+const checkAuth = () => {
+  const token = localStorage.getItem("token");
+
+  if (!token) return false;
+
+  try {
+    const { exp } = JSON.parse(atob(token.split(".")[1])); // Decode JWT
+    if (exp * 1000 < Date.now()) {
+      localStorage.clear();
+      return false;
+    }
+    return true;
+  } catch (error) {
+    console.error("Invalid Token:", error);
+    localStorage.clear();
+    return false;
+  }
+};
+
 export default App;
+
