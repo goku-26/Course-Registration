@@ -9,32 +9,45 @@ const client = new OAuth2Client(process.env.GOOGLE_CLIENT_ID);
 // **Email & Password Login**
 exports.login = async (req, res) => {
   try {
+    console.log("Login Request Received:", req.body); // Debugging
+
     const { email, password } = req.body;
+
+    if (!email || !password) {
+      return res.status(400).json({ message: "Email and password are required" });
+    }
+
     const user = await User.findOne({ email });
 
     if (!user) {
-      return res.status(400).json({ message: "User not found" });
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    if (!user.password) {
+      return res.status(400).json({ message: "User has no password set. Try Google Login." });
     }
 
     const isMatch = await bcrypt.compare(password, user.password);
     if (!isMatch) {
-      return res.status(400).json({ message: "Invalid credentials" });
+      return res.status(401).json({ message: "Invalid credentials" });
     }
 
     const token = jwt.sign({ id: user._id, role: user.role }, process.env.JWT_SECRET, {
       expiresIn: "1h",
     });
 
-    res.json({
+    res.status(200).json({
       token,
       role: user.role,
-      email: user.email, // Ensure email is returned
+      email: user.email,
+      message: "Login successful",
     });
+
   } catch (error) {
+    console.error("Login Error:", error);
     res.status(500).json({ message: "Server Error", error: error.message });
   }
 };
-
 
 // **Google OAuth Login**
 exports.googleLogin = async (req, res) => {
@@ -66,3 +79,32 @@ exports.googleLogin = async (req, res) => {
   }
 };
 
+// **Set Password for Google Users**
+exports.setPassword = async (req, res) => {
+  try {
+    const { email, password } = req.body;
+
+    if (!email || !password) {
+      return res.status(400).json({ message: "Email and password are required" });
+    }
+
+    const user = await User.findOne({ email });
+
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    if (user.password) {
+      return res.status(400).json({ message: "Password is already set. Try logging in." });
+    }
+
+    const salt = await bcrypt.genSalt(10);
+    user.password = await bcrypt.hash(password, salt);
+    await user.save();
+
+    res.status(200).json({ message: "Password set successfully! You can now log in with email & password." });
+  } catch (error) {
+    console.error("Set Password Error:", error);
+    res.status(500).json({ message: "Server Error", error: error.message });
+  }
+};

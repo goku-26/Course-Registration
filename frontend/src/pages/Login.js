@@ -109,7 +109,10 @@ function LoginComponent() {
     }
 
     try {
-      const response = await axios.post("http://localhost:5000/api/auth/login", { email, password });
+      const response = await axios.post("http://localhost:5000/api/auth/login", { email, password }, {
+        headers: { "Content-Type": "application/json" },
+      });
+      
 
       if (response.data.token) {
         localStorage.setItem("token", response.data.token);

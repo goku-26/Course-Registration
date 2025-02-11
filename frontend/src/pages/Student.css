@@ -1,99 +1,4 @@
-/* 
-.user-dashboard {
-    min-height: 100vh;
-    background-color: #f9fafb;
-  }
-  
-  .user-navbar {
-    background: #3498db;
-    color: white;
-    padding: 1rem 2rem;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-  }
-  
-  .user-info {
-    display: flex;
-    flex-direction: column;
-  }
-  
-  .user-name {
-    font-weight: 600;
-    font-size: 1.1rem;
-  }
-  
-  .user-email {
-    font-size: 0.9rem;
-    color: #e0f3ff;
-  }
-  
-  .courses-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-    gap: 1.5rem;
-    margin-top: 1rem;
-  }
-  
-  .course-card {
-    background: white;
-    padding: 1.5rem;
-    border-radius: 8px;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-  }
-  
-  .course-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 1rem;
-  }
-  
-  .course-code {
-    background: #3498db;
-    color: white;
-    padding: 0.3rem 0.8rem;
-    border-radius: 4px;
-    font-size: 0.9rem;
-  }
-  
-  .summary-cards {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-    gap: 1.5rem;
-    margin-top: 1rem;
-  }
-  
-  .summary-card {
-    background: white;
-    padding: 1.5rem;
-    border-radius: 8px;
-    display: flex;
-    align-items: center;
-    gap: 1rem;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-  }
-  
-  .summary-card i {
-    font-size: 2rem;
-    color: #3498db;
-  }
-  
-  .user-sidebar {
-    background: #2c3e50;
-    color: white;
-  }
-  
-  .sidebar-menu li:hover {
-    background: #34495e;
-  }
-  
-  .sidebar-menu li.active {
-    background: #3498db;
-  } */
-
-  * {
+ * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
@@ -334,8 +239,10 @@
 /* Updated course selection layout */
 .courses-list {
   display: flex;
-  flex-direction: column;
-  width: 100%;
+  flex-direction: row;
+  align-items: center;
+  width: 90%;
+  /* font-size: 20px; */
 }
 
 .course-option {
