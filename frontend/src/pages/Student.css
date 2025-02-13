@@ -269,3 +269,41 @@
 .course-form button:hover {
   background: #219150;
 }
+/* Department Selection */
+.department-selection {
+  text-align: center;
+  background: white;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
+  margin-top: 20px;
+}
+
+.department-selection h2 {
+  margin-bottom: 15px;
+}
+
+.department-selection button {
+  background: #3498db;
+  color: white;
+  padding: 10px 15px;
+  border: none;
+  cursor: pointer;
+  margin: 5px;
+  border-radius: 5px;
+  transition: 0.3s;
+  display: inline-block;
+  min-width: 150px;
+}
+
+.department-selection button:hover {
+  background: #2980b9;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .department-selection button {
+    width: 100%;
+    margin-bottom: 10px;
+  }
+}
