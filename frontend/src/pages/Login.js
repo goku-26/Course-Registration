@@ -10,7 +10,6 @@ function LoginComponent() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showRoleSelection, setShowRoleSelection] = useState(false);
-  const [pendingUser, setPendingUser] = useState(null);
 
   const handleLogin = async () => {
     if (!email || !password) {
@@ -19,20 +18,19 @@ function LoginComponent() {
     }
 
     try {
-      const response = await axios.post("http://localhost:5000/api/auth/login", { email, password }, {
-        headers: { "Content-Type": "application/json" },
-      });
-      
+      const response = await axios.post("http://localhost:5000/api/auth/login", { email, password });
+
       if (response.data.token) {
         localStorage.setItem("token", response.data.token);
         localStorage.setItem("user", JSON.stringify(response.data.user));
         localStorage.setItem("email", response.data.user.email);
+
         if (response.data.user.role) {
           handleRoleSelection(response.data.user.role);
         } else {
-          setPendingUser(response.data.user);
           setShowRoleSelection(true);
         }
+
         toast.success("Login successful!", { position: "top-center" });
       } else {
         throw new Error("Invalid response from server");
@@ -47,17 +45,22 @@ function LoginComponent() {
     try {
       const googleToken = response.credential;
       const res = await axios.post("http://localhost:5000/api/auth/google-login", { token: googleToken });
-
+  
+      console.log("Google Login Response:", res.data); // Debugging
+  
       if (res.data.token) {
         localStorage.setItem("token", res.data.token);
         localStorage.setItem("user", JSON.stringify(res.data.user));
         localStorage.setItem("email", res.data.user.email);
+  
         if (res.data.user.role) {
+          console.log("Role found, handling role selection"); // Debugging
           handleRoleSelection(res.data.user.role);
         } else {
-          setPendingUser(res.data.user);
+          console.log("No role found, showing role selection"); // Debugging
           setShowRoleSelection(true);
         }
+  
         toast.success("Google Login successful!", { position: "top-center" });
       } else {
         throw new Error("Invalid response from server");
@@ -72,14 +75,31 @@ function LoginComponent() {
     toast.error("Google Login failed, please try again.", { position: "top-center" });
   };
 
-  const handleRoleSelection = (role) => {
-    localStorage.setItem("role", role);
-    if (pendingUser) {
-      pendingUser.role = role;
-      localStorage.setItem("user", JSON.stringify(pendingUser));
+  const handleRoleSelection = async (role) => {
+    try {
+      const email = localStorage.getItem("email");
+  
+      if (!email) {
+        toast.error("No user found! Please login again.", { position: "top-center" });
+        return;
+      }
+  
+      const response = await axios.post("http://localhost:5000/api/auth/set-role", { email, role });
+  
+      if (response.data.token) {
+        localStorage.setItem("token", response.data.token);
+        localStorage.setItem("user", JSON.stringify(response.data.user));
+        localStorage.setItem("role", role);
+  
+        toast.success(`Logged in as ${role}`, { position: "top-center" });
+        navigate(role === "admin" ? "/admin" : "/student");
+      } else {
+        throw new Error("Role assignment failed");
+      }
+    } catch (error) {
+      console.error("Role selection error:", error);
+      toast.error("Failed to set role. Please try again.", { position: "top-center" });
     }
-    toast.success(`Logged in as ${role}`, { position: "top-center" });
-    navigate(role === "admin" ? "/admin" : "/student");
   };
 
   return (

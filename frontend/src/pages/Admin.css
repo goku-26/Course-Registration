@@ -1,170 +1,208 @@
 /* Admin Dashboard Styles */
 .admin-dashboard {
-    min-height: 100vh;
-    background-color: #f5f6fa;
-  }
-  
-  /* Navbar Styles */
-  .admin-navbar {
-    background: #2c3e50;
-    color: white;
-    padding: 1rem 2rem;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-  }
-  
-  .nav-left h2 {
-    margin: 0;
-    font-size: 1.5rem;
-  }
-  
-  .admin-email {
-    font-size: 0.9rem;
-    color: #bdc3c7;
-  }
-  
-  .logout-btn {
-    background: #e74c3c;
-    color: white;
-    border: none;
-    padding: 0.5rem 1.5rem;
-    border-radius: 4px;
-    cursor: pointer;
-    transition: background 0.3s ease;
-  }
-  
-  .logout-btn:hover {
-    background: #c0392b;
-  }
-  
-  /* Main Content Layout */
-  .admin-content {
-    display: flex;
-  }
-  
-  /* Sidebar Styles */
+  min-height: 100vh;
+  background-color: #f5f6fa;
+  display: flex;
+}
+
+/* Navbar Styles */
+.admin-navbar {
+  background: #2c3e50;
+  color: white;
+  padding: 1rem 2rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+  position: fixed;
+  width: 100%;
+  top: 0;
+  left: 0;
+  height: 70px;
+  z-index: 1000;
+}
+
+.nav-left h2 {
+  margin: 0;
+  font-size: 1.5rem;
+}
+
+.admin-email {
+  font-size: 0.9rem;
+  color: #bdc3c7;
+}
+
+.logout-btn {
+  background: #e74c3c;
+  color: white;
+  border: none;
+  padding: 0.5rem 1.5rem;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+.logout-btn:hover {
+  background: #c0392b;
+}
+
+/* Sidebar Styles */
+.admin-sidebar {
+  width: 250px;
+  background: white;
+  height: 100vh;
+  padding: 1.5rem;
+  box-shadow: 2px 0 5px rgba(0,0,0,0.1);
+  position: fixed;
+  left: 0;
+  top: 70px;
+  overflow-y: auto;
+}
+
+.sidebar-menu h3 {
+  color: #7f8c8d;
+  margin-bottom: 1.5rem;
+}
+
+.sidebar-menu ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.sidebar-menu li {
+  padding: 0.8rem;
+  margin: 0.5rem 0;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.sidebar-menu li:hover {
+  background: #f8f9fa;
+}
+
+.sidebar-menu li.active {
+  background: #3498db;
+  color: white;
+}
+
+/* Main Panel Styles */
+.main-panel {
+  flex: 1;
+  padding: 2rem;
+  margin-left: 250px;
+  margin-top: 70px;
+  width: calc(100% - 250px);
+}
+
+/* Panel Header */
+.panel-header h1 {
+  margin: 0;
+  color: #2c3e50;
+}
+
+.panel-header p {
+  color: #7f8c8d;
+  margin: 0.5rem 0 2rem 0;
+}
+
+/* Stats Row - All in One Line */
+.stats-container {
+  display: flex;
+  justify-content: space-between;
+  gap: 1.5rem;
+  margin-bottom: 2rem;
+  width: 150%;
+}
+
+/* Individual Stat Cards */
+.stat-card {
+  background: white;
+  padding: 1.5rem;
+  border-radius: 8px;
+  position: relative;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+  flex: 1; /* Makes all cards equal width */
+  text-align: center;
+}
+
+.stat-card h3 {
+  color: #7f8c8d;
+  margin-bottom: 1rem;
+  font-size: 1rem;
+}
+
+.stat-card p {
+  font-size: 2rem;
+  color: #2c3e50;
+}
+
+/* Full-Width Table */
+.recent-activities {
+  background: white;
+  padding: 1.5rem;
+  border-radius: 8px;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+  width: 165%;
+}
+
+/* Table */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 1rem;
+}
+
+th, td {
+  padding: 1rem;
+  text-align: left;
+  border-bottom: 1px solid #ecf0f1;
+}
+
+th {
+  background: #f8f9fa;
+  color: #7f8c8d;
+  font-weight: 500;
+}
+
+/* Status Colors */
+.status-completed {
+  color: #2ecc71;
+  font-weight: bold;
+}
+
+.status-pending {
+  color: #f1c40f;
+  font-weight: bold;
+}
+
+/* Responsive Design */
+@media (max-width: 1024px) {
   .admin-sidebar {
-    width: 250px;
-    background: white;
-    min-height: calc(100vh - 70px);
-    padding: 1.5rem;
-    box-shadow: 2px 0 5px rgba(0,0,0,0.1);
+      width: 200px;
   }
   
-  .sidebar-menu h3 {
-    color: #7f8c8d;
-    margin-bottom: 1.5rem;
-  }
-  
-  .sidebar-menu ul {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-  }
-  
-  .sidebar-menu li {
-    padding: 0.8rem;
-    margin: 0.5rem 0;
-    border-radius: 4px;
-    cursor: pointer;
-    transition: all 0.3s ease;
-  }
-  
-  .sidebar-menu li:hover {
-    background: #f8f9fa;
-  }
-  
-  .sidebar-menu li.active {
-    background: #3498db;
-    color: white;
-  }
-  
-  /* Main Panel Styles */
   .main-panel {
-    flex: 1;
-    padding: 2rem;
+      margin-left: 200px;
+      width: calc(100% - 200px);
+  }
+}
+
+@media (max-width: 768px) {
+  .admin-sidebar {
+      width: 100%;
+      height: auto;
+      position: relative;
   }
   
-  .panel-header h1 {
-    margin: 0;
-    color: #2c3e50;
+  .main-panel {
+      margin-left: 0;
+      width: 100%;
+      padding: 1rem;
   }
   
-  .panel-header p {
-    color: #7f8c8d;
-    margin: 0.5rem 0 2rem 0;
-  }
-  
-  /* Stats Cards */
   .stats-container {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-    gap: 1.5rem;
-    margin-bottom: 2rem;
+      grid-template-columns: 1fr;
   }
-  
-  .stat-card {
-    background: white;
-    padding: 1.5rem;
-    border-radius: 8px;
-    position: relative;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-  }
-  
-  .stat-card h3 {
-    color: #7f8c8d;
-    margin: 0 0 1rem 0;
-    font-size: 1rem;
-  }
-  
-  .stat-card p {
-    font-size: 2rem;
-    margin: 0;
-    color: #2c3e50;
-  }
-  
-  .stat-card i {
-    position: absolute;
-    right: 1.5rem;
-    top: 1.5rem;
-    font-size: 2rem;
-    color: #bdc3c7;
-  }
-  
-  /* Recent Activities Table */
-  .recent-activities {
-    background: white;
-    padding: 1.5rem;
-    border-radius: 8px;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-  }
-  
-  table {
-    width: 100%;
-    border-collapse: collapse;
-    margin-top: 1rem;
-  }
-  
-  th, td {
-    padding: 1rem;
-    text-align: left;
-    border-bottom: 1px solid #ecf0f1;
-  }
-  
-  th {
-    background: #f8f9fa;
-    color: #7f8c8d;
-    font-weight: 500;
-  }
-  
-  .status-completed {
-    color: #2ecc71;
-    font-weight: bold;
-  }
-  
-  .status-pending {
-    color: #f1c40f;
-    font-weight: bold;
-  }
+}
