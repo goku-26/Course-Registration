@@ -64,7 +64,7 @@
   /* DASHBOARD CONTENT */
   .user-content {
     display: flex;
-    margin-top: 60px; /* Adjust based on navbar height */
+    margin-top: 60px; 
   }
   
   /* SIDEBAR */
@@ -306,4 +306,16 @@
     width: 100%;
     margin-bottom: 10px;
   }
+}
+
+.course-card {
+  padding: 10px;
+  border: 1px solid #ccc;
+  margin: 10px 0;
+  background: #f9f9f9;
+}
+
+.course-card h3 {
+  margin: 0;
+  font-size: 18px;
 }

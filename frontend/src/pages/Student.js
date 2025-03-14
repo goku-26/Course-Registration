@@ -12,16 +12,38 @@ const User = () => {
   const [selectedCourse, setSelectedCourse] = useState(null);
   const [rollNo, setRollNo] = useState("");
   const [semester, setSemester] = useState("");
-  const [registeredCourse, setRegisteredCourse] = useState(null);
+  const [registeredCourse, setRegisteredCourse] = useState([]);
+
+  const departments = {
+    CSE: ["Data Structures", "Algorithms", "Operating Systems"],
+    "INFORMATION TECHNOLOGY": ["Web Development", "Cyber Security"],
+    "COMPUTER TECHNOLOGY": ["Database Management", "Network Security"],
+    AIML: ["Deep Learning", "Natural Language Processing"],
+    AIDS: ["Big Data Analytics", "Data Mining"],
+    EEE: ["Power Electronics", "Embedded Systems"],
+    EIE: ["Industrial Automation", "Process Control"],
+    ISE: ["Software Engineering", "Cloud Computing"],
+    CIVIL: ["Structural Engineering", "Geotechnical Engineering"],
+  };
 
   useEffect(() => {
     const storedEmail = localStorage.getItem("email");
-    if (storedEmail && storedEmail.includes("@")) {
+    if (storedEmail) {
       setUserEmail(storedEmail);
-    } else {
-      setUserEmail("unknown@student.com");
+      fetchCourses(storedEmail);
     }
   }, []);
+
+  const fetchCourses = async (email) => {
+    try {
+      const response = await fetch("http://localhost:5000/api/registration/courses");
+      const data = await response.json();
+      const studentCourses = data.filter((course) => course.studentEmail === email);
+      setRegisteredCourse(studentCourses);
+    } catch (error) {
+      console.error("Error fetching courses:", error);
+    }
+  };
 
   const extractStudentName = (email) => {
     if (!email || !email.includes("@")) return "STUDENT";
@@ -32,18 +54,6 @@ const User = () => {
 
   const studentName = extractStudentName(userEmail);
 
-  const departments = {
-    "CSE": ["Data Structures", "Algorithms", "Operating Systems"],
-    "INFORMATION TECHNOLOGY": ["Web Development", "Cyber Security"],
-    "COMPUTER TECHNOLOGY": ["Database Management", "Network Security"],
-    "AIML": ["Deep Learning", "Natural Language Processing"],
-    "AIDS": ["Big Data Analytics", "Data Mining"],
-    "EEE": ["Power Electronics", "Embedded Systems"],
-    "EIE": ["Industrial Automation", "Process Control"],
-    "ISE": ["Software Engineering", "Cloud Computing"],
-    "CIVIL": ["Structural Engineering", "Geotechnical Engineering"]
-  };
-
   const handleLogout = () => {
     localStorage.removeItem("token");
     localStorage.removeItem("role");
@@ -51,13 +61,43 @@ const User = () => {
     navigate("/login");
   };
 
-  const handleSubmitRegistration = () => {
+  const handleSubmitRegistration = async () => {
     if (!rollNo || !semester || !selectedDepartment || !selectedCourse) {
       alert("Please fill all fields and select a course.");
       return;
     }
-    setRegisteredCourse(selectedCourse);
-    alert(`Course Registered: ${selectedCourse}`);
+
+    const registrationData = {
+      studentEmail: userEmail,
+      rollNo,
+      semester,
+      department: selectedDepartment,
+      course: selectedCourse,
+    };
+
+    try {
+      const response = await fetch("http://localhost:5000/api/registration/register", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(registrationData),
+      });
+
+      const data = await response.json();
+
+      if (response.ok) {
+        alert(`Course Registered: ${selectedCourse}`);
+        fetchCourses(userEmail);
+        setRollNo("");
+        setSemester("");
+        setSelectedDepartment(null);
+        setSelectedCourse(null);
+      } else {
+        alert("Registration failed: " + (data.message || "Unknown error"));
+      }
+    } catch (error) {
+      console.error("Error:", error);
+      alert("Failed to register course. Check console for details.");
+    }
   };
 
   return (
@@ -70,14 +110,16 @@ const User = () => {
           </div>
         </div>
         <div className="nav-right">
-          <button onClick={handleLogout} className="logout-btn">Logout</button>
+          <button onClick={handleLogout} className="logout-btn">
+            Logout
+          </button>
         </div>
       </nav>
 
       <div className="user-content">
         <div className="user-sidebar">
           <div className="sidebar-menu">
-            <br></br>
+            <br />
             <h3>Student Menu</h3>
             <ul>
               <li className={activeTab === "Dashboard" ? "active" : ""} onClick={() => setActiveTab("Dashboard")}>
@@ -106,12 +148,17 @@ const User = () => {
                 <h1>Welcome, {studentName}</h1>
                 <p>Current Semester: Spring 2025</p>
               </div>
-              {registeredCourse ? (
+              {registeredCourse.length > 0 ? (
                 <div className="registered-course">
-                  <h2>Registered Course</h2>
-                  <div className="course-card">
-                    <h3>{registeredCourse}</h3>
-                  </div>
+                  <h2>Registered Courses</h2>
+                  {registeredCourse.map((course) => (
+                    <div key={course._id} className="course-card">
+                      <h3>{course.course}</h3>
+                      <p style={{ color: course.status === "Completed" ? "green" : "orange" }}>
+                        Status: {course.status || "Ongoing"}
+                      </p>
+                    </div>
+                  ))}
                 </div>
               ) : (
                 <p className="no-course-msg">No courses registered yet.</p>
