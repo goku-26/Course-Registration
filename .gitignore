@@ -8,7 +8,7 @@
 .cache/
 # testing
 /coverage
-
+.env
 # production
 /build
 
